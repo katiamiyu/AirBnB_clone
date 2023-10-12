@@ -4,6 +4,7 @@ module
 contains the base model of Airbnb app
 """
 import uuid
+from . import storage
 from datetime import datetime
 
 
@@ -28,6 +29,7 @@ class BaseModel:
         else:
             self.id = str(uuid.uuid4())
             self.created_at = self.updated_at = datetime.now()
+            storage.new(self)
 
     def __str__(self):
         """
@@ -41,6 +43,7 @@ class BaseModel:
         updates the instance attributes
         """
         self.updated_at = datetime.now()
+        storage.save()
 
     def to_dict(self):
         """
