@@ -5,7 +5,6 @@ module contains user class
 from models.base_model import BaseModel
 
 
-
 class User(BaseModel):
     """
     user class
@@ -14,4 +13,3 @@ class User(BaseModel):
     password = ""
     first_name = ""
     last_name = ""
-

@@ -5,7 +5,6 @@ module contains review class
 from models.base_model import BaseModel
 
 
-
 class Review(BaseModel):
     """
     review class
@@ -13,4 +12,3 @@ class Review(BaseModel):
     place_id = ""
     user_id = ""
     text = ""
-
