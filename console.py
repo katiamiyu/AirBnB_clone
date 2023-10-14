@@ -101,7 +101,47 @@ class HBNBCommand(cmd.Cmd):
                 print(obj_list)
 
     def do_update(self, line):
-        pass
+        """  update the attribute of an object
+            ex:
+            update BaseModel 89398838 email "888@.com"
+        """
+        args = line.split()
+        if len(args) >= 4:
+            if args[0] in HBNBCommand.class_dict:
+                obj_id = args[0] + "." + args[1]
+                if obj_id in storage.all():
+                    setattr(storage.all()[obj_id], args[2],
+                            str(args[3].strip('"')))
+                    storage.save()
+                else:
+                    print("** no instance found **")
+            else:
+                print("** class doesn't exist **")
+        elif len(args) == 3:
+            if args[0] in HBNBCommand.class_dict:
+                obj_id = args[0] + "." + args[1]
+                if obj_id in storage.all():
+                    print("** value missing **")
+                else:
+                    print("** no instance found **")
+            else:
+                print("** class doesn't exist **")
+        elif len(args) == 2:
+            if args[0] in HBNBCommand.class_dict:
+                obj_id = args[0] + "." + args[1]
+                if obj_id in storage.all():
+                    print("** attribute name missing **")
+                else:
+                    print("** no instance found **")
+            else:
+                print("** class doesn't exist **")
+        elif len(args) == 1:
+            if args[0] in HBNBCommand.class_dict:
+                print("** instance id missing **")
+            else:
+                print("** class doesn't exist **")
+        elif len(args) == 0:
+            print("** class name missing **")
 
     def do_quit(self, line):
         """ exits the app """
