@@ -44,10 +44,26 @@ class FileStorage:
         repopulates the __objects object
         """
         from models.base_model import BaseModel
+        from models.state import State
+        from models.city import City
+        from models.amenity import Amenity
+        from models.place import Place
+        from models.review import Review
+
+        class_dict = {"BaseModel": BaseModel, "State": State,
+                      "City": City, "Amenity": Amenity,
+                      "Place": Place, "Review": Review}
+
         try:
-            with open(__file_path, "r") as f:
-                obj_dict = json.loads(f.read())
+            with open(FileStorage.__file_path, "r") as f:
+                obj_dict = json.load(f)
                 for k, v in obj_dict.items():
-                    FileStorage.__objects[key] = BaseModel(**v)
+                    obj = class_dict[v["__class__"]](**v)
+                    FileStorage.__objects[k] = obj
         except Exception:
             pass
+
+    def destroy(self, obj_key):
+        if obj_key in FileStorage.__objects:
+            del (FileStorage.__objects[obj_key])
+        self.save()
