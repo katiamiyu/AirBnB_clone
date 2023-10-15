@@ -30,6 +30,12 @@ class HBNBCommand(cmd.Cmd):
         """ doc"""
         if not line:
             pass
+        elif ("." in line) or ("(" in line):
+            line = line.replace(".", " ")
+            line = line.replace("(", "")
+            line = line.replace(")", "")
+            line = line.split()[1] + " " + line.split()[0]
+            return line
         else:
             if line in HBNBCommand.command_list:
                 return line
