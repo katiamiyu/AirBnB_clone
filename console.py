@@ -149,6 +149,17 @@ class HBNBCommand(cmd.Cmd):
         elif len(args) == 0:
             print("** class name missing **")
 
+    def do_count(self, line):
+        """
+        counting number of instances
+        of a class
+        """
+        count = 0
+        for k in storage.all().keys():
+            if line == k.split(".")[0]:
+                count += 1
+        print(count)
+
     def do_quit(self, line):
         """ exits the app """
         return True
@@ -175,6 +186,10 @@ class HBNBCommand(cmd.Cmd):
     def help_update(self):
         """ doc"""
         print("Update an instance of class")
+
+    def help_count(self):
+        """ doc"""
+        print("Count number of class instance(s)")
 
     def help_quit(self):
         """ help dock for quit """
