@@ -3,6 +3,7 @@
 module contains HBNBCommand
 """
 import cmd
+import re
 from models.base_model import BaseModel
 from models.state import State
 from models.city import City
@@ -30,11 +31,20 @@ class HBNBCommand(cmd.Cmd):
         """ doc"""
         if not line:
             pass
-        elif ("." in line) or ("(" in line):
+        elif re.match(r'^\w+\.\w+\(\)$', line):
             line = line.replace(".", " ")
             line = line.replace("(", "")
             line = line.replace(")", "")
             line = line.split()[1] + " " + line.split()[0]
+            return line
+        elif re.match(r'(\w+)\.(\w+)\((\'[^\']*\'|"[^"]*")\)', line):
+            matches = re.match(r'(\w+)\.(\w+)\((\'[^\']*\'|"[^"]*")\)', line)
+            string1 = matches.group(1)
+            string2 = matches.group(2)
+            string3 = matches.group(3)
+            if string3.startswith("'") or string3.startswith('"'):
+                string3 = string3[1:-1]
+            line = (f"{string2} {string1} {string3}")
             return line
         else:
             if line in HBNBCommand.command_list:
