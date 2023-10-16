@@ -10,6 +10,7 @@ from models.city import City
 from models.amenity import Amenity
 from models.place import Place
 from models.review import Review
+from models.user import User
 from models import storage
 
 
@@ -25,7 +26,7 @@ class HBNBCommand(cmd.Cmd):
                     "show", "destroy"]
     class_dict = {"BaseModel": BaseModel, "State": State,
                   "City": City, "Amenity": Amenity, "Place": Place,
-                  "Review": Review}
+                  "Review": Review, "User": User}
 
     def precmd(self, line):
         """ doc"""
@@ -64,40 +65,43 @@ class HBNBCommand(cmd.Cmd):
 
     def do_show(self, line):
         """ shows an instance"""
-        if line:
-            args = line.split()
-            if len(args) >= 2:
-                if args[0] in HBNBCommand.class_dict:
-                    obj_id = args[0] + "." + args[1]
-                    if obj_id in storage.all():
-                        obj = storage.all().get(obj_id)
-                        print(obj)
-                    else:
-                        print("** no instance found **")
+        args = line.split()
+        if len(args) >= 2:
+            if args[0] in HBNBCommand.class_dict:
+                key = args[0] + "." + args[1]
+                if key in storage.all():
+                    print(storage.all().get(key))
                 else:
-                    print("** class doesn't exist **")
+                    print("** no instance found **")
             else:
+                print("** class doesn't exist **")
+        elif len(args) == 1:
+            if args[0] in HBNBCommand.class_dict:
                 print("** instance id missing **")
-        else:
+            else:
+                print("** class doesn't exist **")
+        elif len(args) == 0:
             print("** class name missing **")
 
     def do_destroy(self, line):
         """ remove an instance base on classname"""
         args = line.split()
-        if len(args) == 0:
-            if len(args) >= 2:
-                if args[0] in HBNBCommand.class_dict.keys():
-                    obj_id = args[0] + "." + args[1]
-                    if obj_id in storage.all():
-                        storage.destroy(obj_id)
-                    else:
-                        print("** no instance found **")
+        if len(args) >= 2:
+            if args[0] in HBNBCommand.class_dict:
+                key = args[0] + "." + args[1]
+                if key in storage.all():
+                    storage.destroy(key)
                 else:
-                    print("** class doesn't exist **")
+                    print("** no instance found **")
             else:
-                print("** class name missing **")
-        else:
-             print("** instance id missing **")
+                print("** class doesn't exist **")
+        elif len(args) == 1:
+            if args[0] in HBNBCommand.class_dict:
+                print("** instance id missing **")
+            else:
+                print("** class doesn't exist **")
+        elif len(args) == 0:
+            print("** class name missing **")
 
     def do_all(self, line):
         """ returns all instances in storage"""
